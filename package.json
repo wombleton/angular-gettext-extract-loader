@@ -1,0 +1,24 @@
+{
+  "name": "angular-gettext-loader",
+  "version": "0.0.1",
+  "description": "Extracts gettext strings from matched files.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "po",
+    "gettext",
+    "extract",
+    "loader",
+    "webpack"
+  ],
+  "author": "Rowan Crawford <wombleton@gmail.com>",
+  "license": "ISC",
+  "dependencies": {
+    "angular-gettext-tools": "^2.1.4",
+    "loader-utils": "^0.2.11",
+    "lodash": "^3.10.1",
+    "pofile": "^1.0.0"
+  }
+}
