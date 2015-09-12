@@ -1,9 +1,9 @@
-# angular-gettext-loader
+# angular-gettext-extract-loader
 Loader to extract gettext strings from an angular project.
 
 ## Installation
 
-    npm i -D angular-gettext-loader
+    npm i -D angular-gettext-extract-loader
 
 ## Usage
 
@@ -15,11 +15,11 @@ Add it into the pipeline for js & html loading:
         ...
           {
             test: /src.*\.js$/,
-            loader: 'angular-gettext-loader?pofile=po/template.pot'
+            loader: 'angular-gettext-extract-loader?pofile=po/template.pot'
           },
           {
             test: /src.*\.html$/,
-            loader: 'angular-gettext-loader?pofile=po/template.pot'
+            loader: 'angular-gettext-extract-loader?pofile=po/template.pot'
           },
         ...
       ]
