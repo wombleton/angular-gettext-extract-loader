@@ -13,6 +13,10 @@
     "loader",
     "webpack"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wombleton/angular-gettext-extract-loader"
+  },
   "author": "Rowan Crawford <wombleton@gmail.com>",
   "license": "MIT",
   "dependencies": {
