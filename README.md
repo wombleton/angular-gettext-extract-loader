@@ -27,7 +27,3 @@ Add it into the pipeline for js & html loading:
     }
 
 This will output all strings found to the the configured pofile.
-
-## Caveat
-
-It does not detect the removal of strings. (Yet ...?)

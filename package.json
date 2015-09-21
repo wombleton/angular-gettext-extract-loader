@@ -1,6 +1,6 @@
 {
   "name": "angular-gettext-extract-loader",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Extracts gettext strings from matched files.",
   "main": "index.js",
   "scripts": {
