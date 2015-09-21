@@ -5,6 +5,28 @@ var loaderUtils = require('loader-utils');
 var path = require('path');
 var _ = require('lodash');
 
+function matches (oldRef, newRef) {
+  return _(oldRef).split(':').first() === _(newRef).split(':').first();
+}
+
+/**
+ * Merge new references with old references; ignore old references from the same file.
+ */
+function mergeReferences (oldRefs, newRefs) {
+  var _newRefs = _(newRefs);
+
+  return _(oldRefs)
+    .reject(function (oldRef) {
+      return _newRefs.any(function (newRef) {
+        return matches(oldRef, newRef);
+      });
+    })
+    .concat(newRefs)
+    .uniq()
+    .sort()
+    .value();
+}
+
 module.exports = function (source) {
   this.cacheable();
 
@@ -46,7 +68,7 @@ module.exports = function (source) {
 
     if (existing) {
       existing.comments = _.uniq(existing.comments.concat(item.comments)).sort();
-      existing.references = _.uniq(existing.references.concat(item.references)).sort();
+      existing.references = mergeReferences(item.references, existing.references);
     } else {
       extractor.strings[item.msgid][context] = item;
     }
