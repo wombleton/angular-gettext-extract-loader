@@ -1,9 +1,9 @@
-var Extractor = require('angular-gettext-tools').Extractor;
-var fs = require('fs');
-var PO = require('pofile');
-var loaderUtils = require('loader-utils');
-var path = require('path');
-var _ = require('lodash');
+const Extractor = require('angular-gettext-tools').Extractor;
+const fs = require('fs');
+const PO = require('pofile');
+const loaderUtils = require('loader-utils');
+const path = require('path');
+const _ = require('lodash');
 
 function matches (oldRef, newRef) {
   return _(oldRef).split(':').first() === _(newRef).split(':').first();
@@ -13,7 +13,7 @@ function matches (oldRef, newRef) {
  * Merge new references with old references; ignore old references from the same file.
  */
 function mergeReferences (oldRefs, newRefs) {
-  var _newRefs = _(newRefs);
+  const _newRefs = _(newRefs);
 
   return _(oldRefs)
     .reject(function (oldRef) {
@@ -27,10 +27,37 @@ function mergeReferences (oldRefs, newRefs) {
     .value();
 }
 
+function findRoot (context, entries) {
+  if (_.isString(entries)) {
+    return path.dirname(path.join(context, entries));
+  } else {
+    return _.reduce(entries, function (memo, entry) {
+      const dir = path.dirname(path.join(context, entry));
+
+      if (memo) {
+        const memoTokens = memo.split(path.sep);
+        const dirTokens = dir.split(path.sep);
+        const result = [];
+
+        // find the minimum matching route
+        for (var i = 0; i < memo.length; i++) {
+          if (memoTokens[i] === dirTokens[i]) {
+            result.push(memoTokens[i]);
+          } else {
+            return result.join(path.sep);
+          }
+        }
+      } else {
+        return dir;
+      }
+    }, '');
+  }
+}
+
 module.exports = function (source) {
   this.cacheable();
 
-  var options = loaderUtils.parseQuery(this.query);
+  const options = loaderUtils.parseQuery(this.query);
 
   if (!options.pofile) {
     options.pofile = 'template.pot';
@@ -39,7 +66,7 @@ module.exports = function (source) {
   var po;
 
   try {
-    var s = fs.readFileSync(options.pofile, 'utf8');
+    const s = fs.readFileSync(options.pofile, 'utf8');
 
     po = PO.parse(s);
   } catch (e) {
@@ -50,21 +77,21 @@ module.exports = function (source) {
     }
   }
 
-  var extractor = new Extractor(options);
+  const extractor = new Extractor(options);
 
-  var root = path.dirname(path.join(this.options.context, this.options.entry));
-  var filename = path.relative(root, this.resourcePath);
+  const root = findRoot(this.options.context, this.options.entry);
+  const filename = path.relative(root, this.resourcePath);
 
   extractor.parse(filename, source);
 
   _.each(po.items, function (item) {
-    var context = item.msgctxt || '$$noContext';
+    const context = item.msgctxt || '$$noContext';
 
     if (!extractor.strings[item.msgid]) {
       extractor.strings[item.msgid] = {};
     }
 
-    var existing = extractor.strings[item.msgid][context];
+    const existing = extractor.strings[item.msgid][context];
 
     if (existing) {
       existing.comments = _.uniq(existing.comments.concat(item.comments)).sort();
