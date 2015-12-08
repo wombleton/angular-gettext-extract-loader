@@ -32,6 +32,9 @@ function findRoot (context, entries) {
     return path.dirname(path.join(context, entries));
   } else {
     return _.reduce(entries, function (memo, entry) {
+      if (!_.isString(entry)) {
+        return memo;
+      }
       const dir = path.dirname(path.join(context, entry));
 
       if (memo) {
