@@ -27,36 +27,6 @@ function mergeReferences (oldRefs, newRefs) {
     .value();
 }
 
-function findRoot (context, entries) {
-  if (_.isString(entries)) {
-    return path.dirname(path.join(context, entries));
-  } else {
-    return _.reduce(entries, function (memo, entry) {
-      if (!_.isString(entry)) {
-        return memo;
-      }
-      const dir = path.dirname(path.join(context, entry));
-
-      if (memo) {
-        const memoTokens = memo.split(path.sep);
-        const dirTokens = dir.split(path.sep);
-        const result = [];
-
-        // find the minimum matching route
-        for (var i = 0; i < memo.length; i++) {
-          if (memoTokens[i] === dirTokens[i]) {
-            result.push(memoTokens[i]);
-          } else {
-            return result.join(path.sep);
-          }
-        }
-      } else {
-        return dir;
-      }
-    }, '');
-  }
-}
-
 module.exports = function (source) {
   this.cacheable();
 
@@ -82,8 +52,7 @@ module.exports = function (source) {
 
   const extractor = new Extractor(options);
 
-  const root = findRoot(this.options.context, this.options.entry);
-  const filename = path.relative(root, this.resourcePath);
+  const filename = path.relative(this.options.context, this.resourcePath);
 
   extractor.parse(filename, source);
 
