@@ -27,15 +27,34 @@ function mergeReferences (oldRefs, newRefs) {
     .value();
 }
 
-module.exports = function (source) {
-  this.cacheable();
 
-  const options = loaderUtils.parseQuery(this.query);
+/**
+ * Parse and merge options from:
+ *   - config-level object (`angularGettextExtractLoader`)
+ *   - query string
+ */
+function getOptions(loaderContext) {
+  const config = loaderContext.options['angularGettextExtractLoader'];
+  const query = loaderUtils.parseQuery(loaderContext.query);
+  const options = _.assign({}, config, query);
+  
+  // Parse `extensions` option. Allows for custom file schemes.
+  if (_.isString(options.extensions)) {
+    options.extensions = JSON.parse(options.extensions);
+  }
 
   if (!options.pofile) {
     options.pofile = 'template.pot';
   }
 
+  return options;
+}
+
+
+module.exports = function (source) {
+  this.cacheable();
+
+  const options = getOptions(this);
   var po;
 
   try {
