@@ -34,7 +34,7 @@ function mergeReferences (oldRefs, newRefs) {
  *   - query string
  */
 function getOptions(loaderContext) {
-  const config = loaderContext.options['angularGettextExtractLoader'];
+  const config = loaderContext.rootContext['angularGettextExtractLoader'];
   const query = loaderUtils.parseQuery(loaderContext.query);
   const options = _.assign({}, config, query);
   
@@ -71,7 +71,7 @@ module.exports = function (source) {
 
   const extractor = new Extractor(options);
 
-  const filename = path.relative(this.options.context, this.resourcePath);
+  const filename = path.relative(this.rootContext, this.resourcePath);
 
   extractor.parse(filename, source);
 
