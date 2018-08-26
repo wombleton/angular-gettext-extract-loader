@@ -1,5 +1,8 @@
-# angular-gettext-extract-loader
 Loader to extract gettext strings from an angular project.
+
+## webpack
+
+    compaitable with webpack ^4.0.0
 
 ## Installation
 
