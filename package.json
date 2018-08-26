@@ -21,7 +21,7 @@
   "license": "MIT",
   "dependencies": {
     "angular-gettext-tools": "^2.1.4",
-    "loader-utils": "^0.2.11",
+    "loader-utils": "1.1.0",
     "lodash": "^3.10.1",
     "pofile": "^1.0.0"
   }
